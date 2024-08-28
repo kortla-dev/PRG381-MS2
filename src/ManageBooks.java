@@ -38,8 +38,8 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         btnEdit = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnDeleteBook = new javax.swing.JButton();
+        btnAddBook = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -58,11 +58,11 @@ public class ManageBooks extends javax.swing.JFrame {
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-edit-book-20.png"))); // NOI18N
         btnEdit.setText("Edit Book");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-delete-15.png"))); // NOI18N
-        jButton2.setText("Delete Book");
+        btnDeleteBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-delete-15.png"))); // NOI18N
+        btnDeleteBook.setText("Delete Book");
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-add-book-20.png"))); // NOI18N
-        jButton3.setText("Add book");
+        btnAddBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-add-book-20.png"))); // NOI18N
+        btnAddBook.setText("Add book");
 
         btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-back-50.png"))); // NOI18N
         btnBack.setText("Back");
@@ -78,11 +78,11 @@ public class ManageBooks extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
                 .addGap(8, 8, 8)
-                .addComponent(jButton2)
+                .addComponent(btnDeleteBook)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -94,9 +94,9 @@ public class ManageBooks extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -251,10 +251,10 @@ public class ManageBooks extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddBook;
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnDeleteBook;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
