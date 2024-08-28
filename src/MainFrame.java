@@ -36,6 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setText("Library Management System");
 
         btnManageBook.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        btnManageBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/literature.png"))); // NOI18N
         btnManageBook.setText("Manage books");
         btnManageBook.setName(""); // NOI18N
         btnManageBook.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -50,8 +51,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnManageBorrower.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        btnManageBorrower.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/person-male.png"))); // NOI18N
         btnManageBorrower.setText("Manage borrowers");
         btnManageBorrower.setName("btnManageBorrowers"); // NOI18N
+        btnManageBorrower.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnManageBorrowerMouseClicked(evt);
+            }
+        });
         btnManageBorrower.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnManageBorrowerActionPerformed(evt);
@@ -121,14 +128,15 @@ public class MainFrame extends javax.swing.JFrame {
         ManageBooks managebooks = new ManageBooks();
         managebooks.setVisible(true);
         this.setVisible(false);
-        managebooks.addWindowListener(new java.awt.event.WindowAdapter() {
-           @Override
-            public void windowClosed(java.awt.event.WindowEvent e) {
-               setVisible(true);
-            }
-        });
         
     }//GEN-LAST:event_btnManageBookMouseClicked
+
+    private void btnManageBorrowerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnManageBorrowerMouseClicked
+        // TODO add your handling code here:
+        ManageBorrowers borrow = new ManageBorrowers();
+        borrow.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnManageBorrowerMouseClicked
 
     /**
      * @param args the command line arguments
@@ -160,7 +168,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                new MainFrame().setVisible(true);               
             }
         });
     }
