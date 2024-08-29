@@ -3,16 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.ResultSet;
+import javax.swing.table.*;
+import java.sql.*;
+
+import libsys.controller.LibSysController;
+
 /**
  *
  * @author emile
  */
 public class ManageBorrowers extends javax.swing.JFrame {
-
+    private final LibSysController controller;
+            
     /**
      * Creates new form ManageBorrowers
      */
     public ManageBorrowers() {
+        this.controller = new LibSysController();
+        
         initComponents();
         txtBorrowerID.setEditable(false);
     }
@@ -32,24 +41,44 @@ public class ManageBorrowers extends javax.swing.JFrame {
         btnAddBorrower = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblUsers = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtBorrowerName = new javax.swing.JTextField();
         txtBorrowerID = new javax.swing.JTextField();
-        txtBorrowerSurname = new javax.swing.JTextField();
+        txtBorrowerBook = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         btnEditBorrower.setText("Edit Borrower");
+        btnEditBorrower.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditBorrowerMouseClicked(evt);
+            }
+        });
 
         btnDeleteBorrower.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-delete-15.png"))); // NOI18N
         btnDeleteBorrower.setText("Delete Borrower");
+        btnDeleteBorrower.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteBorrowerMouseClicked(evt);
+            }
+        });
 
         btnAddBorrower.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-add-male-user-20.png"))); // NOI18N
         btnAddBorrower.setText("Add Borrower");
+        btnAddBorrower.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddBorrowerMouseClicked(evt);
+            }
+        });
 
         btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-back-50.png"))); // NOI18N
         btnBack.setText("Back");
@@ -89,24 +118,26 @@ public class ManageBorrowers extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "Name", "Surname", "Current Book"
+                "ID", "Name", "Borrowing"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblUsers);
 
         jLabel5.setText("Borrower ID");
 
         jLabel6.setText("Name");
 
-        jLabel7.setText("Surname");
+        jLabel7.setText("Borrowing book");
 
         txtBorrowerID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,7 +163,7 @@ public class ManageBorrowers extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(txtBorrowerSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtBorrowerBook, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -148,7 +179,7 @@ public class ManageBorrowers extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBorrowerSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBorrowerBook, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -162,8 +193,8 @@ public class ManageBorrowers extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -196,6 +227,90 @@ public class ManageBorrowers extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnBackMouseClicked
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        var res = this.controller.getUsers();
+        
+        this.populateTable(res);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        var model = (DefaultTableModel)this.tblUsers.getModel();
+        
+        var row = this.tblUsers.getSelectedRow();
+        
+        if (row != -1) {
+            int columnCount = model.getColumnCount();
+
+            // Retrieve data from the selected row
+            Object[] rowData = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                rowData[i] = model.getValueAt(row, i);
+            }
+            
+            this.txtBorrowerID.setText(rowData[0].toString());
+            this.txtBorrowerName.setText(rowData[1].toString());
+            
+            if(rowData[2] == null) {
+                this.txtBorrowerBook.setText("Not borrowing a book");
+            } else {
+                this.txtBorrowerBook.setText(rowData[2].toString());
+            }
+        }
+    }//GEN-LAST:event_tblUsersMouseClicked
+
+    private void btnAddBorrowerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddBorrowerMouseClicked
+        String name = this.txtBorrowerName.getText();
+        
+        if(name == null) { return; }
+        
+        this.controller.addUser(name);
+        
+        ((DefaultTableModel)this.tblUsers.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getUsers());                          
+    }//GEN-LAST:event_btnAddBorrowerMouseClicked
+
+    private void btnEditBorrowerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditBorrowerMouseClicked
+        String id = this.txtBorrowerID.getText();
+        String brw = this.txtBorrowerBook.getText();
+        
+        if(id == null) { return; }
+        if(brw == null) { return; }
+        
+        this.controller.editUser(id, brw);
+        
+        ((DefaultTableModel)this.tblUsers.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getUsers());   
+    }//GEN-LAST:event_btnEditBorrowerMouseClicked
+
+    private void btnDeleteBorrowerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteBorrowerMouseClicked
+        String id = this.txtBorrowerID.getText();
+        
+        if(id == null) { return; }
+        
+        this.controller.deleteUser(id);
+        
+        ((DefaultTableModel)this.tblUsers.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getUsers());
+    }//GEN-LAST:event_btnDeleteBorrowerMouseClicked
+
+    private void populateTable(ResultSet rs) {
+        var model = (DefaultTableModel)this.tblUsers.getModel();
+        
+        try{
+            int columns = rs.getMetaData().getColumnCount();
+            while(rs.next())
+            {  
+                Object[] row = new Object[columns];
+                for (int i = 1; i <= columns; i++)
+                {  
+                    row[i - 1] = rs.getObject(i);
+                }
+                model.insertRow(rs.getRow()-1,row);
+            }
+        }
+        catch(SQLException err) {}
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -242,9 +357,9 @@ public class ManageBorrowers extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblUsers;
+    private javax.swing.JTextField txtBorrowerBook;
     private javax.swing.JTextField txtBorrowerID;
     private javax.swing.JTextField txtBorrowerName;
-    private javax.swing.JTextField txtBorrowerSurname;
     // End of variables declaration//GEN-END:variables
 }

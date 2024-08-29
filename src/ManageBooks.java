@@ -4,16 +4,24 @@
  */
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.*;
+import libsys.controller.LibSysController;
+
 /**
  *
  * @author emile
  */
 public class ManageBooks extends javax.swing.JFrame {
+    private final LibSysController controller;
 
     /**
      * Creates new form ManageBooks
      */
     public ManageBooks() {
+        this.controller = new LibSysController();
+        
         initComponents();
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -51,18 +59,38 @@ public class ManageBooks extends javax.swing.JFrame {
         txtAuthor = new javax.swing.JTextField();
         txtBorrower = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblBooks = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-edit-book-20.png"))); // NOI18N
         btnEdit.setText("Edit Book");
+        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditMouseClicked(evt);
+            }
+        });
 
         btnDeleteBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-delete-15.png"))); // NOI18N
         btnDeleteBook.setText("Delete Book");
+        btnDeleteBook.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteBookMouseClicked(evt);
+            }
+        });
 
         btnAddBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-add-book-20.png"))); // NOI18N
         btnAddBook.setText("Add book");
+        btnAddBook.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddBookMouseClicked(evt);
+            }
+        });
 
         btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-back-50.png"))); // NOI18N
         btnBack.setText("Back");
@@ -108,7 +136,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel7.setText("Book Author");
 
-        jLabel8.setText("Borrower");
+        jLabel8.setText("Available");
 
         txtBookID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,22 +151,16 @@ public class ManageBooks extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtBorrower, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtBookID, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                    .addComponent(txtBookTitle)
+                    .addComponent(txtAuthor)
+                    .addComponent(txtBorrower))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,18 +185,20 @@ public class ManageBooks extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblBooks.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "Book Title", "Author", "Borrower"
+                "ID", "Title", "Author", "Borrower"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBooksMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblBooks);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -218,6 +242,94 @@ public class ManageBooks extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnBackMouseClicked
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        var res = this.controller.getBooks();
+        
+        this.populateTable(res);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tblBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBooksMouseClicked
+        var model = (DefaultTableModel)this.tblBooks.getModel();
+        
+        var row = this.tblBooks.getSelectedRow();
+        
+        if (row != -1) {
+            int columnCount = model.getColumnCount();
+
+            // Retrieve data from the selected row
+            Object[] rowData = new Object[columnCount];
+            for (int i = 0; i < columnCount; i++) {
+                rowData[i] = model.getValueAt(row, i);
+            }
+            
+            this.txtBookID.setText(rowData[0].toString());
+            this.txtBookTitle.setText(rowData[1].toString());
+            this.txtAuthor.setText(rowData[2].toString());
+            this.txtBorrower.setText(rowData[3].toString());
+        }
+    }//GEN-LAST:event_tblBooksMouseClicked
+
+    private void btnAddBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddBookMouseClicked
+        var title = this.txtBookTitle.getText();
+        var author = this.txtAuthor.getText();
+        var available = this.txtBorrower.getText();
+        
+        if(title == null) { return; }
+        if(author == null){ return; }
+        
+        this.controller.addBook(title, author);
+        
+        this.txtBookID.setText("");
+        this.txtBookTitle.setText("");
+        this.txtAuthor.setText("");
+        this.txtBorrower.setText("");
+        
+        ((DefaultTableModel)this.tblBooks.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getBooks());
+    }//GEN-LAST:event_btnAddBookMouseClicked
+
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
+        var id = this.txtBookID.getText();
+        var available = this.txtBorrower.getText();
+        
+        if(id == null) { return; }
+        if(available == null) { return; }
+        
+        this.controller.editBook(id, available);
+        
+        ((DefaultTableModel)this.tblBooks.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getBooks());
+    }//GEN-LAST:event_btnEditMouseClicked
+
+    private void btnDeleteBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteBookMouseClicked
+        var id = this.txtBookID.getText();
+        
+        if(id == null) { return; }
+        
+        this.controller.deleteBook(id);
+        
+        ((DefaultTableModel)this.tblBooks.getModel()).setRowCount(0);
+        this.populateTable(this.controller.getBooks());
+    }//GEN-LAST:event_btnDeleteBookMouseClicked
+
+    private void populateTable(ResultSet rs) {
+        var model = (DefaultTableModel)this.tblBooks.getModel();
+        
+        try{
+            int columns = rs.getMetaData().getColumnCount();
+            while(rs.next())
+            {  
+                Object[] row = new Object[columns];
+                for (int i = 1; i <= columns; i++)
+                {  
+                    row[i - 1] = rs.getObject(i);
+                }
+                model.insertRow(rs.getRow()-1,row);
+            }
+        }
+        catch(SQLException err) {}
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -263,7 +375,7 @@ public class ManageBooks extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblBooks;
     private javax.swing.JTextField txtAuthor;
     private javax.swing.JTextField txtBookID;
     private javax.swing.JTextField txtBookTitle;
