@@ -104,6 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageBookActionPerformed

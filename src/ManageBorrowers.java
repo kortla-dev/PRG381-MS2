@@ -43,7 +43,6 @@ public class ManageBorrowers extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnEditBorrower.setIcon(new javax.swing.ImageIcon("D:\\projects\\icons8-registration-20.png")); // NOI18N
         btnEditBorrower.setText("Edit Borrower");
 
         btnDeleteBorrower.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8-delete-15.png"))); // NOI18N
@@ -183,6 +182,7 @@ public class ManageBorrowers extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtBorrowerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBorrowerIDActionPerformed
